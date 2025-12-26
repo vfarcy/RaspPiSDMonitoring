@@ -37,6 +37,12 @@ end=$(awk '{print $7}' "$STAT_FILE")
 sectors_measured=$((end - start))
 sectors_per_min=$(echo "scale=2; $sectors_measured / $DURATION * 60" | bc)
 
+# Ne pas envoyer d'alerte si aucune écriture détectée
+if [ "$sectors_measured" -eq 0 ]; then
+    exit 0
+fi
+
+
 ###############################################
 # Envoi des résultats
 ###############################################
