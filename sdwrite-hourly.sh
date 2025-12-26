@@ -19,13 +19,6 @@ if [ -z "$DURATION" ]; then
     exit 1
 fi
 
-# Horodatage FR
-TIMESTAMP=$(LC_TIME=fr_FR.UTF-8 date "+%A %d %B %Y %H:%M:%S")
-
-###############################################
-# Envoi de l'horodatage seul
-###############################################
-send_telegram_message "Horodatage : $TIMESTAMP"
 
 ###############################################
 # Mesure brute
@@ -65,6 +58,14 @@ mv "$tmpfile" "$HIST_FILE"
 if [ "$sectors_measured" -eq 0 ]; then
     exit 0
 fi
+
+# Horodatage FR
+TIMESTAMP=$(LC_TIME=fr_FR.UTF-8 date "+%A %d %B %Y %H:%M:%S")
+
+###############################################
+# Envoi de l'horodatage seul
+###############################################
+send_telegram_message "Horodatage : $TIMESTAMP"
 
 
 ###############################################
