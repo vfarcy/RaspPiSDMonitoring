@@ -30,9 +30,9 @@ send_telegram_message "Horodatage : $TIMESTAMP"
 ###############################################
 # Mesure brute
 ###############################################
-start=$(awk '{print $10}' "$STAT_FILE")
+start=$(awk '{print $7}' "$STAT_FILE")
 sleep "$DURATION"
-end=$(awk '{print $10}' "$STAT_FILE")
+end=$(awk '{print $7}' "$STAT_FILE")
 
 sectors_measured=$((end - start))
 sectors_per_min=$(echo "scale=2; $sectors_measured / $DURATION * 60" | bc)
