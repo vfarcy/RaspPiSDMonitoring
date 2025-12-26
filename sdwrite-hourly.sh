@@ -100,7 +100,7 @@ gnuplot <<EOF
 set terminal pngcairo size 900,450 enhanced font 'Arial,12'
 set output "$PLOT_IMG"
 
-set title "Écritures SD" font ",14"
+set title "Écritures SD (mesure sur ${DURATION}s et débit par minute)" font ",14"
 set style data histograms
 set style fill solid 1.0 border -1
 set boxwidth 0.6
