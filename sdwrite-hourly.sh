@@ -61,7 +61,7 @@ awk -v h="$current_hour" -v v="$sectors_per_min" '
 
 mv "$tmpfile" "$HIST_FILE"
 
-# Ne pas envoyer d'alerte si aucune écriture détectée
+# Ne pas envoyer d'alerte si aucune écriture n'est détectée pendant la durée dela mesure brute
 if [ "$sectors_measured" -eq 0 ]; then
     exit 0
 fi
