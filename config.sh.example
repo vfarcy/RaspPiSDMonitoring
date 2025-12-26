@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Telegram Bot Token
+BOT_TOKEN="YOUR_BOT_TOKEN"
+
+# Telegram Chat ID
+CHAT_ID="YOUR_CHAT_ID"
+
+# Path to the stat file
+STAT_FILE="/sys/block/mmcblk0/stat"
+
+# Path to the history file (ramdisk)
+HIST_FILE="/dev/shm/sdwrite-history.txt"

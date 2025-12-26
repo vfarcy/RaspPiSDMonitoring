@@ -1,0 +1,5 @@
+# Ignore the configuration file with credentials
+config.sh
+
+# Ignore the temp directory
+temp/
