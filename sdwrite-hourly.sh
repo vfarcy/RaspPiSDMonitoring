@@ -37,6 +37,30 @@ end=$(awk '{print $7}' "$STAT_FILE")
 sectors_measured=$((end - start))
 sectors_per_min=$(echo "scale=2; $sectors_measured / $DURATION * 60" | bc)
 
+###############################################
+# Mise à jour de l'historique 24h (en RAM)
+###############################################
+current_hour=$(date "+%H")
+
+# Création du fichier si absent
+if [ ! -f "$HIST_FILE" ]; then
+    # Ensure the directory exists
+    mkdir -p "$(dirname "$HIST_FILE")"
+    for h in $(seq -w 0 23); do
+        echo "$h 0" >> "$HIST_FILE"
+    done
+fi
+
+# Mise à jour de l'heure courante
+tmpfile=$(mktemp)
+awk -v h="$current_hour" -v v="$sectors_per_min" '
+{
+    if ($1 == h) print h, v;
+    else print $0;
+}' "$HIST_FILE" > "$tmpfile"
+
+mv "$tmpfile" "$HIST_FILE"
+
 # Ne pas envoyer d'alerte si aucune écriture détectée
 if [ "$sectors_measured" -eq 0 ]; then
     exit 0
@@ -62,30 +86,6 @@ affiche_resultats() {
 
 affiche_resultats "Mesure brute" "$sectors_measured"
 affiche_resultats "Mesure ramenée à 1 minute" "$(printf "%.0f" $sectors_per_min)"
-
-###############################################
-# Mise à jour de l'historique 24h (en RAM)
-###############################################
-current_hour=$(date "+%H")
-
-# Création du fichier si absent
-if [ ! -f "$HIST_FILE" ]; then
-    # Ensure the directory exists
-    mkdir -p "$(dirname "$HIST_FILE")"
-    for h in $(seq -w 0 23); do
-        echo "$h 0" >> "$HIST_FILE"
-    done
-fi
-
-# Mise à jour de l'heure courante
-tmpfile=$(mktemp)
-awk -v h="$current_hour" -v v="$sectors_per_min" '
-{
-    if ($1 == h) print h, v;
-    else print $0;
-}' "$HIST_FILE" > "$tmpfile"
-
-mv "$tmpfile" "$HIST_FILE"
 
 ###############################################
 # Graphique instantané (barres)
